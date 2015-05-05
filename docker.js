@@ -567,7 +567,7 @@ module.exports = function(kbox) {
   };
 
   // @todo: document
-  var exec = function(cid, cmd, callback) {
+  var exec = function(cid, cmd, stdout, stderr, callback) {
     if (typeof cid !== 'string') {
       throw new TypeError('Invalid cid: ' + cid);
     }
@@ -596,7 +596,8 @@ module.exports = function(kbox) {
             callback(err);
           } else {
             exec.start(function(err, stream) {
-              callback(err, stream);
+              container.modem.demuxStream(stream, stdout, stderr);
+              callback(err);
             });
           }
         });
